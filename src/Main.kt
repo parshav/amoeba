@@ -3,17 +3,19 @@ const val ANSI_RESET = "\u001B[0m"
 const val ANSI_GREEN = "\u001B[32m"
 const val maxSize = 10
 
-var prevData = mutableMapOf<Int, Int>()
 val rulesMap = mutableMapOf<Int, Int>() // rules to the value they hold
+
+val prevData = mutableMapOf<Int, Int>()
 
 fun main() {
 
-    rules() // initial rules
+    setupRules() // initial rules
     val mid = maxSize / 2
     val currentData = mutableMapOf<Int, Int>()
 
-    // check if should seed mid or not depending on all 0 rule.
-//    prevData[mid] = 1
+    // Only seed middle value if rule for all 0 gives a 0
+    if (rulesMap[0] == 0)
+        prevData[mid] = 1
 
     for (i in 0..maxSize) {
         for (j in 0..maxSize) {
@@ -32,7 +34,7 @@ fun main() {
                 pXorO(value)
             }
         }
-//        prevData = currentData
+        // not copying as reference is held.
         currentData.forEach {
             prevData[it.key] = it.value
         }
@@ -53,7 +55,7 @@ fun getValueFromPosition(currentPosition: Int): Int {
     }
 }
 
-fun rules() {
+fun setupRules() {
     rulesMap[111] = 0
     rulesMap[110] = 0
     rulesMap[101] = 0
